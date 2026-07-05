@@ -50,11 +50,11 @@ header.top{
   position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(14px);
   background:rgba(11,13,18,.82); border-bottom:1px solid var(--line);
 }
-.nav-inner{max-width:1080px;margin:0 auto;padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:18px;}
-.brand{font-family:var(--serif); font-weight:700; font-size:17px; letter-spacing:-.01em;}
+.nav-inner{max-width:1280px;margin:0 auto;padding:12px 20px; display:flex; align-items:center; justify-content:flex-start; gap:20px; flex-wrap:nowrap; overflow-x:auto;}
+.brand{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:-.01em; white-space:nowrap; flex-shrink:0;}
 .brand span{color:var(--amber);}
-nav.links{display:flex; gap:22px; font-size:13px; flex-wrap:wrap;}
-nav.links a{text-decoration:none; color:var(--ink-soft); font-weight:600;}
+nav.links{display:flex; gap:14px; font-size:12px; flex-wrap:nowrap; align-items:center;}
+nav.links a{text-decoration:none; color:var(--ink-soft); font-weight:600; white-space:nowrap;}
 nav.links a:hover{color:var(--ink);}
 
 /* ---------- hero ---------- */

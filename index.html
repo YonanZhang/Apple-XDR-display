@@ -50,10 +50,22 @@ header.top{
   position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(14px);
   background:rgba(11,13,18,.82); border-bottom:1px solid var(--line);
 }
-.nav-inner{max-width:1280px;margin:0 auto;padding:12px 20px; display:flex; align-items:center; justify-content:flex-start; gap:20px; flex-wrap:nowrap; overflow-x:auto;}
+header.top{
+  position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(14px);
+  background:rgba(11,13,18,.82); border-bottom:1px solid var(--line);
+  overflow-x:auto; overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+header.top::-webkit-scrollbar{display:none;}
+.nav-inner{
+  min-width:max-content;
+  padding:12px 20px;
+  display:flex; align-items:center; gap:20px;
+}
 .brand{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:-.01em; white-space:nowrap; flex-shrink:0;}
 .brand span{color:var(--amber);}
-nav.links{display:flex; gap:14px; font-size:12px; flex-wrap:nowrap; align-items:center;}
+nav.links{display:flex; gap:14px; font-size:12px; align-items:center; white-space:nowrap;}
 nav.links a{text-decoration:none; color:var(--ink-soft); font-weight:600; white-space:nowrap;}
 nav.links a:hover{color:var(--ink);}
 

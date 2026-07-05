@@ -251,6 +251,51 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
 .mt-en{display:block; font-family:var(--mono); font-size:10.5px; color:var(--ink-soft); font-weight:400; margin-top:2px;}
 .mode-table tr:nth-child(even) td{background:#171B24;}
 .mode-table td:nth-child(6){min-width:260px; color:var(--ink-soft);}
+
+/* ---------- term link (可点击技术词条) ---------- */
+.tl{
+  cursor:pointer; color:var(--indigo); border-bottom:1px dashed var(--indigo);
+  white-space:nowrap; font-weight:600; transition:color .15s, border-color .15s;
+}
+.tl:hover{color:#9db8f0; border-color:#9db8f0;}
+
+/* ---------- term modal overlay ---------- */
+#termModal{
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(5,7,12,.72); backdrop-filter:blur(6px);
+  align-items:flex-end; justify-content:center;
+}
+#termModal.open{display:flex;}
+.tm-panel{
+  width:100%; max-width:780px; max-height:82vh; overflow-y:auto;
+  background:#14171F; border:1px solid var(--line); border-radius:14px 14px 0 0;
+  padding:0 0 40px; box-shadow:0 -12px 48px rgba(0,0,0,.5);
+  transform:translateY(100%); transition:transform .28s cubic-bezier(.22,1,.36,1);
+}
+#termModal.open .tm-panel{transform:translateY(0);}
+.tm-bar{position:sticky;top:0;background:#14171F;padding:16px 28px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;z-index:1;}
+.tm-label{font-family:var(--mono);font-size:11px;color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:.1em;}
+.tm-close{cursor:pointer;font-size:20px;color:var(--ink-soft);line-height:1;padding:4px 8px;border-radius:4px;border:none;background:transparent;}
+.tm-close:hover{color:var(--ink);}
+.tm-body{padding:24px 28px 0;}
+.tm-body h3{font-family:var(--serif);font-size:24px;margin:0 0 6px;font-weight:600;}
+.tm-std{font-family:var(--mono);font-size:12px;color:var(--indigo);margin:0 0 20px;}
+.tm-section{margin-bottom:20px;}
+.tm-section h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-family:var(--mono);margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+.tm-section p{font-size:14.5px;line-height:1.75;margin:0 0 10px;color:var(--ink);}
+.tm-section ul{margin:0;padding-left:18px;}
+.tm-section li{font-size:14px;line-height:1.7;color:var(--ink);margin-bottom:4px;}
+.tm-formula{font-family:var(--mono);font-size:13px;background:#0d1120;border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin:8px 0;line-height:1.9;overflow-x:auto;}
+.tm-formula .comment{color:var(--ink-soft);}
+.tm-formula .val{color:#ffd9a8;}
+.tm-formula .key{color:var(--indigo);}
+.tm-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+@media(max-width:600px){.tm-row-grid{grid-template-columns:1fr;}}
+.tm-kv{background:#0d1120;border:1px solid var(--line);border-radius:4px;padding:10px 14px;}
+.tm-kv .k{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
+.tm-kv .v{font-size:14px;font-weight:600;}
+.tm-tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.tm-tag{font-family:var(--mono);font-size:11px;background:var(--indigo-soft);color:var(--indigo);padding:4px 9px;border-radius:3px;}
 </style>
 </head>
 <body>
@@ -266,6 +311,7 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
       <a href="#ch06">06 XDR 家族</a>
       <a href="#ch07">07 争议与局限</a>
       <a href="#ch05">08 名词表</a>
+      <a href="compare.html" style="color:var(--amber);font-weight:700;">09 对比仿真 ↗</a>
     </nav>
   </div>
 </header>
@@ -467,16 +513,16 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
     </div>
 
     <h4 class="mode-list-title">完整参考模式列表 · Reference Mode Inventory</h4>
-    <p class="mode-list-note">每个参考模式同时绑定「色域 + 白点 + Gamma/EOTF + 亮度」四项参数，本质上是把一整套行业播放/制作标准固化成一键可切换的预设。下表汇总 Pro Display XDR（2019）与 Studio Display XDR（2026）目前公开的全部模式，按用途分组排列；标注「Studio 专属」的模式仅 Studio Display XDR 提供。</p>
+    <p class="mode-list-note">每个参考模式同时绑定「色域 + 白点 + Gamma/EOTF + 亮度」四项参数，本质上是把一整套行业播放/制作标准固化成一键可切换的预设。下表汇总 Pro Display XDR（2019）与 Studio Display XDR（2026）目前公开的全部模式，按用途分组排列；标注「Studio 专属」的模式仅 Studio Display XDR 提供。<br><span style="color:var(--amber);font-family:var(--mono);font-size:12px;">↗ 点击蓝色下划线词条可查看详细技术解释</span></p>
 
     <p class="mode-group-label">▸ 通用日常模式</p>
     <div class="table-scroll">
     <table class="mode-table">
       <tr><th>模式名称</th><th>机型</th><th>色域 / 白点</th><th>Gamma / EOTF</th><th>亮度</th><th>主要适用人群</th></tr>
-      <tr><td>Apple XDR Display<br><span class="mt-en">(P3-1600 nits)</span></td><td>Pro Display XDR</td><td>P3 / D65</td><td>XDR 动态曲线</td><td>峰值 1600 nit</td><td>普通日常办公与创作用户，开机默认模式，无需手动选择即可获得 XDR 动态范围体验</td></tr>
-      <tr><td>Apple XDR Display<br><span class="mt-en">(P3-2000 nits)</span></td><td>Studio 专属</td><td>P3 / Apple CMF 2026</td><td>XDR 动态曲线</td><td>峰值 2000 nit</td><td>同上，Studio Display XDR 默认通用模式</td></tr>
-      <tr><td>Apple XDR Display<br><span class="mt-en">(P3 + Adobe RGB-2000 nits)</span></td><td>Studio 专属</td><td>P3 + Adobe RGB / Apple CMF 2026</td><td>XDR 动态曲线</td><td>峰值 2000 nit</td><td>日常既要刷网页又偶尔要看印刷打样色彩的设计师，一套预设覆盖两种色域需求</td></tr>
-      <tr><td>Apple Display<br><span class="mt-en">(P3-500 nits)</span></td><td>Pro Display XDR</td><td>P3 / D65</td><td>标准 sRGB 类伽马</td><td>典型 500 nit</td><td>希望亮度与 MacBook / iMac 等内置屏幕保持视觉统一、不需要 XDR 峰值亮度的用户</td></tr>
+      <tr><td>Apple XDR Display<br><span class="mt-en">(P3-1600 nits)</span></td><td>Pro Display XDR</td><td>P3 / D65</td><td><span class="tl" data-key="xdr-curve">XDR 动态曲线</span></td><td><span class="tl" data-key="nit1600">峰值 1600 nit</span></td><td>普通日常办公与创作用户，开机默认模式，无需手动选择即可获得 XDR 动态范围体验</td></tr>
+      <tr><td>Apple XDR Display<br><span class="mt-en">(P3-2000 nits)</span></td><td>Studio 专属</td><td>P3 / Apple CMF 2026</td><td><span class="tl" data-key="xdr-curve">XDR 动态曲线</span></td><td><span class="tl" data-key="nit2000">峰值 2000 nit</span></td><td>同上，Studio Display XDR 默认通用模式</td></tr>
+      <tr><td>Apple XDR Display<br><span class="mt-en">(P3 + Adobe RGB-2000 nits)</span></td><td>Studio 专属</td><td>P3 + Adobe RGB / Apple CMF 2026</td><td><span class="tl" data-key="xdr-curve">XDR 动态曲线</span></td><td><span class="tl" data-key="nit2000">峰值 2000 nit</span></td><td>日常既要刷网页又偶尔要看印刷打样色彩的设计师，一套预设覆盖两种色域需求</td></tr>
+      <tr><td>Apple Display<br><span class="mt-en">(P3-500 nits)</span></td><td>Pro Display XDR</td><td>P3 / D65</td><td><span class="tl" data-key="srgb-gamma">标准 sRGB 类伽马</span></td><td><span class="tl" data-key="nit500">典型 500 nit</span></td><td>希望亮度与 MacBook / iMac 等内置屏幕保持视觉统一、不需要 XDR 峰值亮度的用户</td></tr>
     </table>
     </div>
 
@@ -484,10 +530,10 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
     <div class="table-scroll">
     <table class="mode-table">
       <tr><th>模式名称</th><th>机型</th><th>色域 / 白点</th><th>Gamma / EOTF</th><th>亮度</th><th>主要适用人群</th></tr>
-      <tr><td>HDR Video<br><span class="mt-en">(P3-ST 2084)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td>PQ（SMPTE ST 2084）</td><td>1000 nit 全屏持续</td><td>按 ITU-R BT.2100 环境标准工作的 HDR 视频调色师，用于 4K/UHD HDR 母版制作与质检</td></tr>
-      <tr><td>HDTV Video<br><span class="mt-en">(BT.709-BT.1886)</span></td><td>Pro / Studio</td><td>BT.709 / D65</td><td>BT.1886</td><td>SDR 标准亮度</td><td>面向 ITU-R BT.709 高清广播标准的电视节目制作人员，按 BT.2035 受控环境观看</td></tr>
-      <tr><td>NTSC Video<br><span class="mt-en">(BT.601 SMPTE-C)</span></td><td>Pro / Studio</td><td>SMPTE-C / D65</td><td>BT.601 标清伽马</td><td>SDR 标准亮度</td><td>面向北美 NTSC 标清制式的档案修复与标清视频制作人员</td></tr>
-      <tr><td>PAL and SECAM Video<br><span class="mt-en">(BT.601 EBU)</span></td><td>Pro / Studio</td><td>EBU Tech 3213 / D65</td><td>BT.601 标清伽马</td><td>SDR 标准亮度</td><td>面向欧洲 PAL/SECAM 标清制式的档案修复与标清视频制作人员</td></tr>
+      <tr><td>HDR Video<br><span class="mt-en">(P3-ST 2084)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td><span class="tl" data-key="pq-st2084">PQ（SMPTE ST 2084）</span></td><td><span class="tl" data-key="nit1000">1000 nit 全屏持续</span></td><td>按 ITU-R BT.2100 环境标准工作的 HDR 视频调色师，用于 4K/UHD HDR 母版制作与质检</td></tr>
+      <tr><td>HDTV Video<br><span class="mt-en">(BT.709-BT.1886)</span></td><td>Pro / Studio</td><td>BT.709 / D65</td><td><span class="tl" data-key="bt1886">BT.1886</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>面向 ITU-R BT.709 高清广播标准的电视节目制作人员，按 BT.2035 受控环境观看</td></tr>
+      <tr><td>NTSC Video<br><span class="mt-en">(BT.601 SMPTE-C)</span></td><td>Pro / Studio</td><td>SMPTE-C / D65</td><td><span class="tl" data-key="bt601-gamma">BT.601 标清伽马</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>面向北美 NTSC 标清制式的档案修复与标清视频制作人员</td></tr>
+      <tr><td>PAL and SECAM Video<br><span class="mt-en">(BT.601 EBU)</span></td><td>Pro / Studio</td><td>EBU Tech 3213 / D65</td><td><span class="tl" data-key="bt601-gamma">BT.601 标清伽马</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>面向欧洲 PAL/SECAM 标清制式的档案修复与标清视频制作人员</td></tr>
     </table>
     </div>
 
@@ -495,8 +541,8 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
     <div class="table-scroll">
     <table class="mode-table">
       <tr><th>模式名称</th><th>机型</th><th>色域 / 白点</th><th>Gamma / EOTF</th><th>亮度</th><th>主要适用人群</th></tr>
-      <tr><td>Digital Cinema<br><span class="mt-en">(P3-DCI)</span></td><td>Pro / Studio</td><td>P3 / 数字影院白点</td><td>院线放映伽马</td><td>影院级亮度</td><td>面向 SMPTE RP 431-2 院线放映标准的电影调色师，模拟影院放映厅观看效果</td></tr>
-      <tr><td>Digital Cinema<br><span class="mt-en">(P3-D65)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td>院线放映伽马</td><td>影院级亮度</td><td>采用 D65 作为参考白点的数字中间片（DI）调色流程，常用于流媒体平台交付前的院线模拟</td></tr>
+      <tr><td>Digital Cinema<br><span class="mt-en">(P3-DCI)</span></td><td>Pro / Studio</td><td>P3 / 数字影院白点 x=0.314, y=0.351</td><td><span class="tl" data-key="cinema-gamma">院线放映伽马</span></td><td><span class="tl" data-key="cinema-brightness">影院级亮度</span></td><td>面向 SMPTE RP 431-2 院线放映标准的电影调色师，模拟影院放映厅观看效果</td></tr>
+      <tr><td>Digital Cinema<br><span class="mt-en">(P3-D65)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td><span class="tl" data-key="cinema-gamma">院线放映伽马</span></td><td><span class="tl" data-key="cinema-brightness">影院级亮度</span></td><td>采用 D65 作为参考白点的数字中间片（DI）调色流程，常用于流媒体平台交付前的院线模拟</td></tr>
     </table>
     </div>
 
@@ -504,12 +550,12 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
     <div class="table-scroll">
     <table class="mode-table">
       <tr><th>模式名称</th><th>机型</th><th>色域 / 白点</th><th>Gamma / EOTF</th><th>亮度</th><th>主要适用人群</th></tr>
-      <tr><td>Design and Print<br><span class="mt-en">(P3-D50)</span></td><td>Pro / Studio</td><td>P3 / D50</td><td>标准伽马</td><td>SDR 标准亮度</td><td>按 ISO 3664 / 12646 印刷打样观察标准工作的平面设计与出版印前人员</td></tr>
-      <tr><td>Design and Print<br><span class="mt-en">(Adobe RGB-D50)</span></td><td>Studio 专属</td><td>Adobe RGB / D50</td><td>标准伽马</td><td>SDR 标准亮度</td><td>使用 Adobe RGB 工作流的印前设计师，色域更贴近商业印刷机实际可还原范围</td></tr>
-      <tr><td>Photography<br><span class="mt-en">(P3-D65)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td>标准伽马</td><td>SDR 标准亮度</td><td>以屏幕端 / 数字发布为主的摄影师，作品主要在网络与移动设备上展示</td></tr>
-      <tr><td>Photography<br><span class="mt-en">(Adobe RGB-D65)</span></td><td>Studio 专属</td><td>Adobe RGB / D65</td><td>标准伽马</td><td>SDR 标准亮度</td><td>以印刷出片为主的摄影师，需要更贴近喷墨打印机实际色域的预览效果</td></tr>
-      <tr><td>HDR Photography<br><span class="mt-en">(P3-D65)</span></td><td>Studio 专属</td><td>P3 / D65</td><td>HDR 曲线</td><td>HDR 峰值亮度</td><td>拍摄 HDR 格式（如 ProRAW HDR）并需要在屏幕上还原真实高光层次的摄影师</td></tr>
-      <tr><td>Internet and Web<br><span class="mt-en">(sRGB)</span></td><td>Pro / Studio</td><td>sRGB / D65</td><td>sRGB 标准伽马</td><td>SDR 标准亮度</td><td>网页与 UI/UX 设计师，确保设计稿在绝大多数消费级 sRGB 屏幕上呈现一致效果</td></tr>
+      <tr><td>Design and Print<br><span class="mt-en">(P3-D50)</span></td><td>Pro / Studio</td><td>P3 / D50</td><td><span class="tl" data-key="std-gamma">标准伽马（Gamma 2.2）</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>按 ISO 3664 / 12646 印刷打样观察标准工作的平面设计与出版印前人员</td></tr>
+      <tr><td>Design and Print<br><span class="mt-en">(Adobe RGB-D50)</span></td><td>Studio 专属</td><td>Adobe RGB / D50</td><td><span class="tl" data-key="std-gamma">标准伽马（Gamma 2.2）</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>使用 Adobe RGB 工作流的印前设计师，色域更贴近商业印刷机实际可还原范围</td></tr>
+      <tr><td>Photography<br><span class="mt-en">(P3-D65)</span></td><td>Pro / Studio</td><td>P3 / D65</td><td><span class="tl" data-key="std-gamma">标准伽马（Gamma 2.2）</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>以屏幕端 / 数字发布为主的摄影师，作品主要在网络与移动设备上展示</td></tr>
+      <tr><td>Photography<br><span class="mt-en">(Adobe RGB-D65)</span></td><td>Studio 专属</td><td>Adobe RGB / D65</td><td><span class="tl" data-key="std-gamma">标准伽马（Gamma 2.2）</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>以印刷出片为主的摄影师，需要更贴近喷墨打印机实际色域的预览效果</td></tr>
+      <tr><td>HDR Photography<br><span class="mt-en">(P3-D65)</span></td><td>Studio 专属</td><td>P3 / D65</td><td><span class="tl" data-key="hdr-curve">HDR 曲线（HLG / PQ 自适应）</span></td><td><span class="tl" data-key="hdr-peak">HDR 峰值亮度</span></td><td>拍摄 HDR 格式（如 ProRAW HDR）并需要在屏幕上还原真实高光层次的摄影师</td></tr>
+      <tr><td>Internet and Web<br><span class="mt-en">(sRGB)</span></td><td>Pro / Studio</td><td>sRGB / D65</td><td><span class="tl" data-key="srgb-gamma">sRGB 标准伽马</span></td><td><span class="tl" data-key="sdr-brightness">SDR 标准亮度</span></td><td>网页与 UI/UX 设计师，确保设计稿在绝大多数消费级 sRGB 屏幕上呈现一致效果</td></tr>
     </table>
     </div>
 
@@ -517,8 +563,8 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
     <div class="table-scroll">
     <table class="mode-table">
       <tr><th>模式名称</th><th>机型</th><th>色域 / 白点</th><th>Gamma / EOTF</th><th>亮度</th><th>主要适用人群</th></tr>
-      <tr><td>Medical Imaging<br><span class="mt-en">(DICOM-350 nits)</span></td><td>Studio 专属</td><td>灰阶为主 / DICOM 标准</td><td>DICOM GSDF 灰阶函数</td><td>350 nit</td><td>放射科医生与影像诊断医师，配合 DICOM 校准 App 用于 CT/MRI 等医学影像的日常诊断阅片</td></tr>
-      <tr><td>Medical Imaging<br><span class="mt-en">(DICOM-600 nits)</span></td><td>Studio 专属</td><td>灰阶为主 / DICOM 标准</td><td>DICOM GSDF 灰阶函数</td><td>600 nit</td><td>需要更高环境亮度适应性（如更明亮诊室）的医学影像诊断场景</td></tr>
+      <tr><td>Medical Imaging<br><span class="mt-en">(DICOM-350 nits)</span></td><td>Studio 专属</td><td>灰阶为主 / DICOM 标准</td><td><span class="tl" data-key="dicom-gsdf">DICOM GSDF 灰阶函数</span></td><td><span class="tl" data-key="nit350">350 nit</span></td><td>放射科医生与影像诊断医师，配合 DICOM 校准 App 用于 CT/MRI 等医学影像的日常诊断阅片</td></tr>
+      <tr><td>Medical Imaging<br><span class="mt-en">(DICOM-600 nits)</span></td><td>Studio 专属</td><td>灰阶为主 / DICOM 标准</td><td><span class="tl" data-key="dicom-gsdf">DICOM GSDF 灰阶函数</span></td><td><span class="tl" data-key="nit600">600 nit</span></td><td>需要更高环境亮度适应性（如更明亮诊室）的医学影像诊断场景</td></tr>
     </table>
     </div>
     <p class="mode-list-note">说明：DICOM（Digital Imaging and Communications in Medicine）是医学影像领域的灰阶显示标准，GSDF（Grayscale Standard Display Function）确保不同亮度灰阶在人眼感知上呈等间距分布，避免因显示器灰阶非线性导致漏诊。苹果为此还专门提交了医学影像校准器（Medical Imaging Calibrator）申请 FDA 认证，用于诊断放射学场景。</p>
@@ -1005,8 +1051,23 @@ footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:
   </ul>
 </section>
 
+<!-- =================== TERM MODAL =================== -->
+<div id="termModal" role="dialog" aria-modal="true">
+  <div class="tm-panel">
+    <div class="tm-bar">
+      <span class="tm-label" id="tmCategory">技术指标解释</span>
+      <button class="tm-close" id="tmClose" aria-label="关闭">✕</button>
+    </div>
+    <div class="tm-body" id="tmBody"></div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
+    <h5>扩展页面</h5>
+    <ul class="ref-list" style="margin-bottom:20px;">
+      <li><a href="compare.html" style="color:var(--amber);">→ 第 09 页：Apple Studio Display XDR vs Sony BVM-HX3110 显示效果对比仿真</a></li>
+    </ul>
     <h5>主要资料来源</h5>
     <ul class="ref-list">
       <li>Apple, <em>Pro Display XDR Technology Overview</em>, Feb 2020 — apple.com/pro-display-xdr/pdf/Pro_Display_White_Paper_Feb_2020.pdf</li>
@@ -1072,6 +1133,397 @@ buildGrid(document.getElementById('gridAfter'), 48*22);
   box.addEventListener('touchmove',e=>{if(dragging) setPos(e.touches[0].clientX);});
   window.addEventListener('touchend',()=>dragging=false);
 })();
+
+// ============ TERM MODAL 词典 ============
+const TERMS = {
+  'xdr-curve': {
+    category: 'EOTF · 电光转换函数',
+    title: 'XDR 动态曲线',
+    std: 'Apple 专有 · 基于 SMPTE ST 2084 PQ 派生',
+    sections: [
+      { h: '定义', body: 'XDR 动态曲线是苹果为 XDR 系列显示器自研的混合电光转换函数（EOTF）。在常规 SDR 内容上使用接近 BT.1886（Gamma 2.4）的曲线以保证阴影细节；当接收到 HDR 内容信号（PQ 元数据）时，自动切换为 PQ 高亮度段，实现单一曲线同时兼容 SDR 与 HDR 两种信号源。' },
+      { h: '关键参数', kv: [
+        {k:'SDR 段 Gamma', v:'≈ 2.4（BT.1886 特性）'},
+        {k:'HDR 段 EOTF', v:'SMPTE ST 2084 PQ'},
+        {k:'Pro XDR 全屏映射峰值', v:'1600 nit'},
+        {k:'Studio XDR 全屏映射峰值', v:'2000 nit'},
+        {k:'环境光补偿', v:'True Tone 双传感器动态调整白点'},
+      ]},
+      { h: '工程意义', body: '普通显示器需用户手动切换 SDR/HDR 模式；XDR 动态曲线让 macOS 直接检测内容元数据并实时切换，对用户透明。这也是 Apple XDR 通用模式与传统参考模式的最大技术区别：通用模式追求"观看体验最优"，参考模式追求"色彩绝对准确"。' },
+      { h: '适用场景', tags: ['日常桌面使用', '混合 SDR/HDR 内容', 'Final Cut Pro 预览', 'Apple TV 内容'] }
+    ]
+  },
+  'pq-st2084': {
+    category: 'EOTF · 电光转换函数',
+    title: 'PQ 感知量化曲线（SMPTE ST 2084）',
+    std: 'SMPTE ST 2084:2014 · 同被 ITU-R BT.2100 采用',
+    sections: [
+      { h: '定义', body: 'PQ（Perceptual Quantizer）是专为 HDR 显示设计的电光转换函数，由 Dolby 主导开发并于 2014 年被 SMPTE 标准化。核心是以绝对亮度值（cd/m²）描述光亮度，允许在 0.0001 nit 到 10,000 nit 的超大范围内精确编码亮度信息。' },
+      { h: '数学公式', formula: `<span class="comment">// PQ 正向传递函数（编码值 E′ → 显示亮度 Y）</span>
+<span class="key">Y</span> = <span class="val">10000</span> × [ max(<span class="key">E′</span><span class="val">^(1/m₂)</span> − c₁, 0) / (c₂ − c₃×<span class="key">E′</span><span class="val">^(1/m₂)</span>) ]<span class="val">^(1/m₁)</span>
+
+<span class="comment">// 标准常数：</span>
+m₁ = <span class="val">0.1593017578125</span>   c₁ = <span class="val">0.8359375</span>
+m₂ = <span class="val">78.84375</span>          c₂ = <span class="val">18.8515625</span>   c₃ = <span class="val">18.6875</span>` },
+      { h: '关键参数', kv: [
+        {k:'最大绝对亮度（编码上限）', v:'10,000 nit'},
+        {k:'最小绝对亮度', v:'0.0001 nit（接近绝对黑）'},
+        {k:'位深需求', v:'至少 10-bit，推荐 12-bit'},
+        {k:'参考监看亮度（BT.2100）', v:'1000 nit'},
+        {k:'Pro Display XDR 全屏持续', v:'1000 nit（HDR Video 模式）'},
+      ]},
+      { h: '与 Gamma 2.2 的本质区别', body: '传统 Gamma 编码是相对比例（0–1），与显示器实际亮度无关；PQ 编码是绝对物理量，相同码值在任何显示器上对应相同亮度，这是跨设备色彩一致性的基础，也是 HDR10、Dolby Vision 的共同核心。' },
+      { h: '适用场景', tags: ['HDR 视频调色', 'HDR10 母版', 'Dolby Vision IQ', '流媒体 PQ 元数据'] }
+    ]
+  },
+  'bt1886': {
+    category: 'EOTF · 电光转换函数',
+    title: 'BT.1886 — 高清广播电光转换函数',
+    std: 'ITU-R Recommendation BT.1886:2011',
+    sections: [
+      { h: '定义', body: 'BT.1886 是 ITU-R 于 2011 年发布的参考 EOTF，为专业高清广播监看设备规范"接近 Gamma 2.4"的显示行为。它修正了 BT.709 直接使用"Gamma 2.2"时黑场处理的歧义：明确用黑场亮度（Lb）和白场亮度（Lw）参数化的数学公式，而非简单幂函数。' },
+      { h: '数学公式', formula: `<span class="comment">// BT.1886 参考 EOTF</span>
+<span class="key">L</span> = <span class="val">a</span> × max(<span class="key">V</span> + <span class="val">b</span>, 0)<span class="val">^2.4</span>
+
+<span class="comment">// 参数由黑白场亮度确定：</span>
+<span class="val">a</span> = (Lw<span class="val">^(1/2.4)</span> − Lb<span class="val">^(1/2.4)</span>)<span class="val">^2.4</span>
+<span class="val">b</span> = Lb<span class="val">^(1/2.4)</span> / (Lw<span class="val">^(1/2.4)</span> − Lb<span class="val">^(1/2.4)</span>)
+<span class="comment">// 典型值：Lw = 100 cd/m²，Lb = 0.01 cd/m²</span>` },
+      { h: '关键参数', kv: [
+        {k:'参考白场亮度 Lw', v:'100 cd/m²（标准制播监看）'},
+        {k:'参考黑场亮度 Lb', v:'0.01 cd/m²'},
+        {k:'等效 Gamma', v:'≈ 2.4（非纯幂函数，黑场修正版）'},
+        {k:'对应色域标准', v:'ITU-R BT.709（高清广播）'},
+        {k:'参考观看环境', v:'BT.2035 受控房间（环境亮度 ≤ 5 lux）'},
+      ]},
+      { h: '与 sRGB Gamma 的区别', body: 'sRGB 在暗部使用线性段（约前 4% 输入范围）以避免噪声放大；BT.1886 是纯幂函数形式（双参数修正黑场），两者在暗部行为有可测量差异。Pro Display XDR 的 HDTV 模式严格遵循 BT.1886 而非 sRGB 曲线，这对广播工程师至关重要。' },
+      { h: '适用场景', tags: ['HD 广播制作', 'BT.709 调色', '电视台后期', 'EBU R118 合规监看'] }
+    ]
+  },
+  'bt601-gamma': {
+    category: 'EOTF · 电光转换函数',
+    title: 'BT.601 标清伽马',
+    std: 'ITU-R Recommendation BT.601-7:2011（原 CCIR 601）',
+    sections: [
+      { h: '定义', body: 'BT.601 是 1982 年制定的标清数字视频标准（NTSC/PAL 数字化基础），传递函数与 BT.709 高清标准完全相同（Gamma ≈ 2.22 分段函数），主要区别在色域（SMPTE-C 或 EBU）和采样结构（4:2:2）。启用该模式，主要是为了让调色师准确预览内容在标清时代电视机上的呈现效果。' },
+      { h: '数学公式（传递函数，与 BT.709 相同）', formula: `<span class="comment">// 正向 OETF（场景光 → 电信号编码）</span>
+<span class="key">E′</span> = <span class="val">4.500</span> × E                   <span class="comment">(E ≤ 0.018，线性段）</span>
+<span class="key">E′</span> = <span class="val">1.099</span> × E<span class="val">^0.45</span> − <span class="val">0.099</span>   <span class="comment">(E > 0.018，幂函数段）</span>
+
+<span class="comment">// 显示端等效 Gamma ≈ 2.22</span>` },
+      { h: '关键参数', kv: [
+        {k:'NTSC 色域（SMPTE-C）', v:'白点 D65，比 BT.709 色域略小'},
+        {k:'PAL/SECAM 色域（EBU）', v:'白点 D65，EBU Tech 3213 原色'},
+        {k:'NTSC 帧率', v:'29.97fps'},
+        {k:'PAL/SECAM 帧率', v:'25fps'},
+        {k:'典型分辨率', v:'720×480（NTSC）/ 720×576（PAL）'},
+      ]},
+      { h: '适用场景', tags: ['标清档案修复', '老节目重播校准', '标清发行质检', '广播历史素材'] }
+    ]
+  },
+  'cinema-gamma': {
+    category: 'EOTF · 电光转换函数',
+    title: '院线放映伽马（DCI Gamma 2.6）',
+    std: 'SMPTE RP 431-2:2011 · DCI Specification v1.4',
+    sections: [
+      { h: '定义', body: 'DCI（Digital Cinema Initiatives）规定数字放映机的参考 EOTF 为 Gamma 2.6，高于消费端常见的 Gamma 2.2 或 2.4。原因是院线参考观看环境接近全黑（≤ 0.02 foot-lamberts），在极暗环境下人眼对亮度对比更敏感，需要更陡的曲线保证暗部层次不被压缩。' },
+      { h: '数学公式', formula: `<span class="comment">// DCI P3 参考 EOTF（简化幂函数）</span>
+<span class="key">L</span> = <span class="key">V</span><span class="val">^2.6</span>
+
+<span class="comment">// 注：DCI 规范在极低码区有线性保护段，上方为简化形式。</span>
+<span class="comment">// 参考白场：48 cd/m²（≈ 14 foot-lamberts）</span>` },
+      { h: '关键参数', kv: [
+        {k:'参考 Gamma', v:'2.6'},
+        {k:'参考白场亮度', v:'48 cd/m²（14 foot-lamberts）'},
+        {k:'DCI 白点坐标', v:'x=0.314, y=0.351（比 D65 偏绿）'},
+        {k:'参考观看环境亮度', v:'≤ 0.02 foot-lamberts（接近全黑）'},
+        {k:'色域', v:'DCI-P3（比 sRGB 宽约 25%）'},
+      ]},
+      { h: '为什么 DCI 白点不是 D65？', body: '早期数字放映机（Xenon 弧光灯）色温约 6000K，DCI 规范直接以氙灯特性定义白点坐标，而非强制 D65。这导致了 P3-DCI（模拟真实院线）与 P3-D65（流媒体院线级制作）两个模式的分工。' },
+      { h: '适用场景', tags: ['院线调色质检', 'DCP 制作', 'P3-DCI 母版', 'SMPTE RP431 合规'] }
+    ]
+  },
+  'std-gamma': {
+    category: 'EOTF · 电光转换函数',
+    title: '标准伽马（Gamma 2.2）',
+    std: '工业事实标准 · IEC 61966-2-1 附件',
+    sections: [
+      { h: '定义', body: 'Gamma 2.2 是显示领域历史最长的事实标准电光转换函数，来自 CRT 阴极射线管显示器的物理发光特性。现代液晶面板通过驱动电路主动实现此曲线，以与历史内容兼容。平面设计和摄影工作流中常用，白点可为 D50（印刷）或 D65（屏幕发布）。' },
+      { h: '数学公式', formula: `<span class="comment">// 纯幂函数形式（理想化）</span>
+<span class="key">L</span> = <span class="key">V</span><span class="val">^2.2</span>
+
+<span class="comment">// 实际应用中常包含黑场截距修正。</span>
+<span class="comment">// BT.1886 = Gamma 2.4 的参数化修正版本（暗部更陡）。</span>` },
+      { h: '关键参数', kv: [
+        {k:'幂次', v:'2.2'},
+        {k:'印刷白点', v:'D50（5003K）— ISO 3664 / 12646'},
+        {k:'屏幕发布白点', v:'D65（6504K）'},
+        {k:'适用色域', v:'Adobe RGB、DCI-P3（SDR）、sRGB 视觉近似'},
+        {k:'参考白场亮度', v:'无强制规定，通常 80–120 cd/m²'},
+      ]},
+      { h: '印刷工作流为何用 D50？', body: 'ISO 3664 规定在 D50 光源下目视评价印刷品，因为 D50 比 D65 更接近室内灯箱的实际色温。设计师使用 P3-D50 或 Adobe RGB-D50 模式，是在模拟"灯箱下对比屏幕与打印品"的软打样场景。' },
+      { h: '适用场景', tags: ['平面设计', '印刷打样软校对', '摄影后期', 'Adobe 系软件工作流'] }
+    ]
+  },
+  'srgb-gamma': {
+    category: 'EOTF · 电光转换函数',
+    title: 'sRGB 标准伽马',
+    std: 'IEC 61966-2-1:1999',
+    sections: [
+      { h: '定义', body: 'sRGB 传递函数是分段复合函数：极低亮度区（约前 4% 输入范围）使用线性段，避免量化噪声被幂函数放大；其余区域使用"Gamma 2.4 基础幂次 + 线性偏移"近似，整体视觉上等效于 Gamma ≈ 2.2，但数学表达与纯 Gamma 2.2 在暗部有可测量差异。' },
+      { h: '数学公式', formula: `<span class="comment">// sRGB 正向 OETF（线性光 → 编码值）</span>
+<span class="key">C_srgb</span> = <span class="val">12.92</span> × <span class="key">C_lin</span>                         <span class="comment">(C_lin ≤ 0.0031308)</span>
+<span class="key">C_srgb</span> = <span class="val">1.055</span> × <span class="key">C_lin</span><span class="val">^(1/2.4)</span> − <span class="val">0.055</span>    <span class="comment">(C_lin > 0.0031308)</span>
+
+<span class="comment">// 逆变换（显示端 EOTF）：</span>
+<span class="key">C_lin</span> = <span class="key">C_srgb</span> / <span class="val">12.92</span>                        <span class="comment">(C_srgb ≤ 0.04045)</span>
+<span class="key">C_lin</span> = ((<span class="key">C_srgb</span> + <span class="val">0.055</span>) / <span class="val">1.055</span>)<span class="val">^2.4</span>    <span class="comment">(C_srgb > 0.04045)</span>` },
+      { h: '关键参数', kv: [
+        {k:'等效 Gamma（视觉）', v:'≈ 2.2（整体）'},
+        {k:'色域', v:'sRGB ≈ Rec.709，约覆盖 P3 的 74%'},
+        {k:'白点', v:'D65（6504K）'},
+        {k:'全球设备覆盖率', v:'> 99% 的消费级显示器'},
+      ]},
+      { h: '为什么 UI/UX 必须用 sRGB 模式验收？', body: '互联网内容默认假设 sRGB 色彩空间，浏览器对未嵌入描述文件的图片直接按 sRGB 解码。设计师在 P3 显示器上制作若不切换 sRGB 验收，橙/红/绿等鲜艳色在普通用户屏幕上会明显偏淡。' },
+      { h: '适用场景', tags: ['Web/UI 设计', '社交媒体内容', 'Windows 跨平台验收', '消费级兼容检查'] }
+    ]
+  },
+  'hdr-curve': {
+    category: 'EOTF · 电光转换函数',
+    title: 'HDR 曲线（HLG / PQ 自适应）',
+    std: 'ITU-R BT.2100:2018（包含 PQ 与 HLG 两种 HDR 曲线）',
+    sections: [
+      { h: '定义', body: '摄影专用 HDR 模式下，苹果根据图像元数据自适应选择 PQ 或 HLG。PQ 以绝对亮度编码，适合固定峰值亮度的专业 HDR 母版；HLG（Hybrid Log-Gamma）兼顾 SDR 后向兼容，iPhone ProRAW HDR 导出通常携带 HLG 元数据。' },
+      { h: 'HLG 数学公式', formula: `<span class="comment">// HLG 正向 OETF（场景亮度 → 编码值）</span>
+<span class="key">E</span> = √(<span class="val">3</span>×<span class="key">E′</span>)                                <span class="comment">(0 ≤ E′ ≤ 1/12，线性段）</span>
+<span class="key">E</span> = <span class="val">a</span>×ln(<span class="val">12</span>×<span class="key">E′</span>−<span class="val">b</span>) + <span class="val">c</span>                  <span class="comment">(E′ > 1/12，对数段）</span>
+
+<span class="comment">// a = 0.17883277   b = 0.28466892   c = 0.55991073</span>` },
+      { h: '关键参数', kv: [
+        {k:'PQ 参考峰值（编码范围）', v:'10,000 nit'},
+        {k:'HLG 参考峰值', v:'1000 nit'},
+        {k:'ProRAW HDR 典型格式', v:'Gain Map 元数据 + HLG 基底'},
+        {k:'Studio XDR HDR Photo 峰值', v:'2000 nit'},
+      ]},
+      { h: 'HLG 相比 PQ 的优势', body: 'HLG 低亮度区与标准 Gamma 行为相同，在不支持 HDR 的 SDR 显示器上降级播放时仍有合理暗部细节；PQ 内容直接降级则整体偏暗。这是广播与移动端摄影更倾向 HLG 的根本原因。' },
+      { h: '适用场景', tags: ['iPhone ProRAW HDR', 'HDR 摄影后期', 'Gain Map 格式', '跨设备 HDR 分享'] }
+    ]
+  },
+  'dicom-gsdf': {
+    category: 'EOTF · 灰阶函数',
+    title: 'DICOM GSDF 灰阶标准显示函数',
+    std: 'NEMA DICOM PS3.14:2023（Grayscale Standard Display Function）',
+    sections: [
+      { h: '定义', body: 'DICOM GSDF 是医学影像显示设备的灰阶电光转换函数，核心目标是"人眼对灰阶的感知应呈等感知差异分布"——无论亮区还是暗区，相邻灰阶之间的视觉差异应相等。这是以人眼感知为中心的工程设计，与追求技术线性的普通显示器完全不同。' },
+      { h: '数学公式（JND 模型）', formula: `<span class="comment">// 第 j 个 JND 指数对应亮度 L(j)：</span>
+<span class="key">log₁₀(L(j))</span> = <span class="val">a</span> + <span class="val">c</span>×ln(<span class="key">j</span>) + <span class="val">e</span>×[ln(<span class="key">j</span>)]² + <span class="val">g</span>×[ln(<span class="key">j</span>)]³ + <span class="val">m</span>×[ln(<span class="key">j</span>)]⁴
+
+<span class="comment">// a=-1.3011877  c=0.080242636  e=-0.0041994495</span>
+<span class="comment">// g=0.00086843293  m=-0.000016944423</span>
+<span class="comment">// J 范围：1–1023，覆盖 0.05–4000 cd/m²</span>` },
+      { h: '关键参数', kv: [
+        {k:'亮度覆盖范围', v:'0.05 ~ 4000 cd/m²'},
+        {k:'总 JND 感知等级', v:'1023 个'},
+        {k:'DICOM-350 模式', v:'峰值 350 nit，适合 ≤ 50 lux 暗诊室'},
+        {k:'DICOM-600 模式', v:'峰值 600 nit，适合 50–150 lux 明亮诊室'},
+        {k:'FDA 分类', v:'II 类医疗器械（需 510(k) 预市场通知）'},
+      ]},
+      { h: '为什么医学影像不能用普通 Gamma？', body: '普通 Gamma 2.2 在暗区灰阶步长远大于亮区，导致 X 光、CT 片中低密度组织细节难以区分。GSDF 通过 JND 均等化确保医生在每个亮度区间看到同等数量的有意义灰阶差别，是医学诊断准确率的显示硬件基础。' },
+      { h: '适用场景', tags: ['放射科诊断阅片', 'CT/MRI 影像判读', 'X 光骨密度分析', 'PACS 系统质检'] }
+    ]
+  },
+  'sdr-brightness': {
+    category: '亮度规格',
+    title: 'SDR 标准亮度',
+    std: 'ITU-R BT.2035 · EBU R118 参考制播环境',
+    sections: [
+      { h: '定义', body: 'SDR 行业参考白场亮度历史上无单一强制标准，专业制播领域广泛采用 BT.2035 受控观看环境：参考白场 100–120 cd/m²，环境亮度 ≤ 5 lux。XDR 的 SDR 参考模式会将显示器输出归一化到约 100 nit，而非按物理能力全力输出。' },
+      { h: '关键参数', kv: [
+        {k:'BT.2035 参考白场', v:'100–120 cd/m²'},
+        {k:'EBU R118 推荐白场', v:'120 cd/m²（±20%）'},
+        {k:'Pro Display XDR 物理 SDR 亮度', v:'约 500 nit（归一化后约 100 nit）'},
+        {k:'SDR/HDR 兼容亮度点', v:'~203 nit（BT.2100 HLG 参考）'},
+        {k:'消费级电视 SDR 亮度', v:'200–600 nit（通常超出参考值）'},
+      ]},
+      { h: '适用场景', tags: ['广播制播', 'BT.709 调色参考', 'SDR 流媒体制作', '印刷设计打样'] }
+    ]
+  },
+  'hdr-peak': {
+    category: '亮度规格',
+    title: 'HDR 峰值亮度',
+    std: 'CTA-861-H · VESA DisplayHDR 认证体系',
+    sections: [
+      { h: '定义', body: 'HDR 峰值亮度是显示器在小面积高光区域瞬时可达的最高亮度（cd/m²），通常用 10% 窗口测试图案测量。峰值通常只能在屏幕 1%–10% 面积短暂维持，全屏持续亮度往往只有峰值的 20%–50%。' },
+      { h: '关键参数', kv: [
+        {k:'Pro Display XDR HDR 峰值', v:'1600 nit（10% 窗口）'},
+        {k:'Studio Display XDR HDR 峰值', v:'2000 nit（10% 窗口）'},
+        {k:'DisplayHDR 1600 认证门槛', v:'≥ 1600 nit 10% 窗口'},
+        {k:'DisplayHDR 2000 认证门槛', v:'≥ 2000 nit 10% 窗口'},
+        {k:'PCMag 实测（Pro Display XDR）', v:'1561 nit'},
+      ]},
+      { h: 'HDR 峰值 vs 全屏持续亮度', body: 'HDR 峰值决定高光"刺穿感"（太阳、火焰、金属反光是否有物理真实感）；全屏持续亮度决定日常使用舒适度。XDR 允许 1000 nit 全屏长期维持，这比"只能短暂峰值"的竞品在日常体验中差异更大。' },
+      { h: '适用场景', tags: ['HDR 内容质检', 'Dolby Vision 母版验收', 'HDR 调色参考', '摄影 HDR 输出确认'] }
+    ]
+  },
+  'cinema-brightness': {
+    category: '亮度规格',
+    title: '影院级亮度（DCI 标准放映亮度）',
+    std: 'SMPTE RP 431-2:2011 · DCI Specification v1.4',
+    sections: [
+      { h: '定义', body: 'DCI 规定数字放映机参考白场亮度为 48 cd/m²（约 14 foot-lamberts）。该数值远低于家用显示器，因为影院屏幕面积极大且观看环境接近全黑，相对亮度感知与小尺寸显示器完全不同。XDR 院线模式里的 48 cd/m² 经归一化处理，不代表显示器的实际输出亮度。' },
+      { h: '关键参数', kv: [
+        {k:'DCI 参考白场', v:'48 cd/m²（14 foot-lamberts）'},
+        {k:'DCI 黑场上限', v:'0.005 cd/m²（约 10000:1）'},
+        {k:'DCI 白点坐标', v:'x=0.314, y=0.351'},
+        {k:'DCI Gamma', v:'2.6'},
+        {k:'放映机最低亮度要求', v:'≥ 14 foot-lamberts（中心轴）'},
+      ]},
+      { h: '适用场景', tags: ['院线调色质检', 'DCP 数字影院包制作', 'P3-DCI 母版', '院线 vs 家庭版对比'] }
+    ]
+  },
+  'nit1600': {
+    category: '亮度规格',
+    title: '峰值 1600 nit',
+    std: 'Pro Display XDR · VESA DisplayHDR 1600',
+    sections: [
+      { h: '定义', body: '1600 nit 是 Pro Display XDR（2019）的 HDR 峰值亮度，10% 窗口测量。全屏持续 HDR 亮度为 1000 nit，SDR 模式为 500 nit。这是首款通过 VESA DisplayHDR 1600 认证的桌面级显示器。' },
+      { h: '关键参数', kv: [
+        {k:'10% 窗口峰值（标称）', v:'1600 nit'},
+        {k:'PCMag 实测峰值', v:'1561 nit'},
+        {k:'全屏持续（HDR）', v:'1000 nit'},
+        {k:'全屏持续（SDR）', v:'500 nit'},
+        {k:'背光分区', v:'576 区 FALD'},
+        {k:'DisplayHDR 认证', v:'DisplayHDR 1600'},
+      ]},
+      { h: '适用场景', tags: ['HDR 母版制作', 'Dolby Vision 质检', 'Final Cut Pro HDR', '专业影像后期'] }
+    ]
+  },
+  'nit2000': {
+    category: '亮度规格',
+    title: '峰值 2000 nit',
+    std: 'Studio Display XDR · VESA DisplayHDR 2000',
+    sections: [
+      { h: '定义', body: '2000 nit 是 Studio Display XDR（2026）的 HDR 峰值亮度，SDR 全屏持续亮度同步提升至 1000 nit（Pro Display XDR SDR 亮度的 2 倍）。配合 2304 分区背光，是目前桌面级量产显示器中亮度规格最高的型号之一。' },
+      { h: '关键参数', kv: [
+        {k:'10% 窗口 HDR 峰值', v:'2000 nit（标称）'},
+        {k:'SDR 全屏持续亮度', v:'1000 nit'},
+        {k:'背光分区', v:'2304 区 Mini-LED FALD'},
+        {k:'DisplayHDR 认证', v:'DisplayHDR 2000'},
+        {k:'LTT Labs 实测对比度', v:'> 1,000,000:1'},
+      ]},
+      { h: '适用场景', tags: ['Dolby Vision 原创内容', 'HDR2000 母版', '户外强光使用', 'DICOM 高亮模式'] }
+    ]
+  },
+  'nit1000': {
+    category: '亮度规格',
+    title: '1000 nit 全屏持续亮度',
+    std: 'Apple 白皮书技术要求 · ITU-R BT.2100 参考监看目标',
+    sections: [
+      { h: '定义', body: '1000 nit 全屏持续亮度指显示器在全部屏幕面积上长时间（而非短暂爆发）维持 1000 cd/m² 输出而不触发热保护降频。大多数"标榜 1000 nit"的消费级显示器只能在 ≤ 10% 面积短暂达到该值，全屏持续通常仅 200–400 nit。' },
+      { h: '关键参数', kv: [
+        {k:'Pro XDR 全屏持续（HDR）', v:'1000 nit'},
+        {k:'Pro XDR 全屏持续（SDR）', v:'500 nit'},
+        {k:'Studio XDR 全屏持续（SDR）', v:'1000 nit'},
+        {k:'散热方案', v:'无风扇 · 铝合金格栅自然对流'},
+        {k:'散热面积扩大', v:'格栅开孔使散热面积超普通后盖 2× 以上'},
+      ]},
+      { h: '为什么"全屏持续"比峰值更重要？', body: 'HDR 调色时参考监看器需要长时间稳定显示；XDR 铝合金格栅外壳通过大量开孔将散热面积扩大一倍以上，让 100–150W 的背光热量自然对流散出，这是"打孔铝合金后盖"背后真实的工程原因，而非纯粹的美学决策。' },
+      { h: '适用场景', tags: ['HDR 视频监看', '长时间调色', 'HDR 游戏（XDR 模式）', 'Dolby Vision 实时预览'] }
+    ]
+  },
+  'nit500': {
+    category: '亮度规格',
+    title: '典型 500 nit（SDR 亮度）',
+    std: 'Pro Display XDR Apple Display 模式',
+    sections: [
+      { h: '定义', body: 'Pro Display XDR 在 SDR 日常模式的全屏持续亮度约 500 nit，苹果选取该值使外接显示器与 MacBook Pro / iMac 内置屏幕亮度保持一致，避免多屏工作环境中的视觉跳变。' },
+      { h: '关键参数', kv: [
+        {k:'PCMag 实测 SDR 亮度', v:'499 nit（接近标称）'},
+        {k:'对应 MacBook Pro 内屏', v:'500–600 nit（SDR 峰值）'},
+        {k:'行业参考白场', v:'80–120 nit（BT.2035）— 专业参考模式将归一化至此'},
+      ]},
+      { h: '适用场景', tags: ['日常办公', '多屏亮度统一', '轻度创意工作', '视网膜屏兼容浏览'] }
+    ]
+  },
+  'nit350': {
+    category: '亮度规格',
+    title: '350 nit（DICOM 暗室阅片模式）',
+    std: 'NEMA DICOM PS3.14 · ACR 放射科显示指南',
+    sections: [
+      { h: '定义', body: '350 nit 是 DICOM 医学影像标准推荐的暗诊室参考亮度上限。过高亮度导致眼睛快速疲劳并放大 uniformity 问题；过低则无法充分呈现低密度组织灰阶细节。350 nit 是经临床验证的"暗室阅片"最优峰值亮度范围。' },
+      { h: '关键参数', kv: [
+        {k:'适用环境亮度', v:'≤ 50 lux（暗诊室）'},
+        {k:'ACR 最低亮度要求', v:'≥ 170 cd/m²'},
+        {k:'GSDF JND 覆盖', v:'0.05–350 nit 范围内均等感知分布'},
+      ]},
+      { h: '适用场景', tags: ['放射科暗室阅片', 'MRI 诊断', 'CT 影像判读', '夜间急诊影像科'] }
+    ]
+  },
+  'nit600': {
+    category: '亮度规格',
+    title: '600 nit（DICOM 明亮诊室模式）',
+    std: 'NEMA DICOM PS3.14 · 高环境亮度诊室适配',
+    sections: [
+      { h: '定义', body: '600 nit 模式面向较亮诊室（50–150 lux）。更高峰值亮度使屏幕在较亮环境下保持足够对比度与灰阶区分能力，GSDF 曲线参数随之调整，确保整个亮度范围仍保持 JND 均等分布。' },
+      { h: '关键参数', kv: [
+        {k:'适用环境亮度', v:'50–150 lux（明亮诊室）'},
+        {k:'峰值亮度', v:'600 nit'},
+        {k:'GSDF 适配', v:'高亮参数版本，JND 均等分布维持'},
+      ]},
+      { h: '适用场景', tags: ['普通诊室阅片', '急诊科快速判读', '术中影像辅助', '明亮教学医院'] }
+    ]
+  }
+};
+
+// ============ Modal 渲染 & 交互 ============
+function buildTermHTML(key) {
+  const t = TERMS[key];
+  if (!t) return '<p style="color:var(--ink-soft)">暂无详细说明</p>';
+  let html = `<h3>${t.title}</h3><p class="tm-std">${t.std}</p>`;
+  t.sections.forEach(s => {
+    html += `<div class="tm-section"><h4>${s.h}</h4>`;
+    if (s.body) html += `<p>${s.body}</p>`;
+    if (s.formula) html += `<div class="tm-formula">${s.formula}</div>`;
+    if (s.kv) {
+      html += '<div class="tm-row-grid">';
+      s.kv.forEach(r => { html += `<div class="tm-kv"><div class="k">${r.k}</div><div class="v">${r.v}</div></div>`; });
+      html += '</div>';
+    }
+    if (s.tags) {
+      html += '<div class="tm-tag-row">';
+      s.tags.forEach(tag => { html += `<span class="tm-tag">${tag}</span>`; });
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  return html;
+}
+
+const modal = document.getElementById('termModal');
+const tmBody = document.getElementById('tmBody');
+const tmCategory = document.getElementById('tmCategory');
+const tmClose = document.getElementById('tmClose');
+
+document.querySelectorAll('.tl').forEach(el => {
+  el.addEventListener('click', e => {
+    e.stopPropagation();
+    const key = el.dataset.key;
+    const t = TERMS[key];
+    if (!t) return;
+    tmCategory.textContent = t.category || '技术指标解释';
+    tmBody.innerHTML = buildTermHTML(key);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+tmClose.addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>
